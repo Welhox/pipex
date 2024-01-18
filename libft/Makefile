@@ -6,10 +6,14 @@
 #    By: clundber <clundber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 11:59:53 by clundber          #+#    #+#              #
-#    Updated: 2024/01/13 15:10:45 by clundber         ###   ########.fr        #
+#    Updated: 2024/01/17 15:39:08 by clundber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+COLOUR_GREEN=\033[0;32m
+COLOUR_RED=\033[0;31m
+COLOUR_BLUE=\033[0;34m
+COLOUR_END=\033[0m
 
 # ------------ PROJECT -------#
 NAME = libft.a
@@ -44,20 +48,22 @@ OFILES = $(SRC_FLS:.c=.o)
 
 #--------- FLAGS ----------
 
-cc = cc
+CC = @cc
 CFLAGS = -Wall -Wextra -Werror -I includes
 
 all: $(NAME)
 
 $(NAME): $(OFILES)
-
-	ar rcs $(NAME) $(OFILES)
-
+	@echo "$(COLOUR_BLUE)compiling libft$(COLOUR_END)"
+	@ar rcs $(NAME) $(OFILES)
+	@echo "$(COLOUR_GREEN)libft compiled successfully$(COLOUR_END)"
+	
 clean:
-	rm -f $(OFILES) 
+	@echo "$(COLOUR_GREEN)cleaning libft$(COLOUR_END)"
+	@rm -f $(OFILES) 
 
 fclean: clean
-	rm -f $(NAME) 
+	@rm -f $(NAME) 
 	
 re: fclean $(NAME) 
 

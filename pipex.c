@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 11:34:07 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/16 15:13:06 by clundber         ###   ########.fr       */
+/*   Updated: 2024/01/17 15:37:12 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,19 +99,81 @@ char	*get_path(char *cmd,char **envp)
 	
 }
 
+ char **get_cmd(char **argv)
+
+{
+	char **array;
+
+	array = NULL;
+	array = malloc(sizeof(char*) * 3);
+	int	i;
+
+	i = 1;
+	array[0] = ft_strdup(argv[0]);
+	//array[1] = ft_strdup(argv[2]);
+	array[1] = NULL;
+ 
+	return(array);
+
+} 
+
 int	main(int argc, char *argv[], char *envp[])
 
 {
-	//pid_t	pid;
+	t_pipex	**pipex;
+	pipex = malloc(sizeof(t_pipex));
+	pid_t	pid;
+	int		fd;
 	char	*path;
+	char	**cmd_arr;
+	int		pipe_fd[2];
 
-	path = get_path(argv[2], envp);
-	//ft_printf("correct path for %s is %s\n", argv[2], path);
-	//int fd;
+	arg_check(argc, argv);
+	pipe(pipe_fd);
+	pid = fork();
+	cmd_arr = get_cmd(argv);
+	if (pid != 0) //parent
+	{
+		fd = open(argv[1], O_RDONLY);
+		dup2(fd, 0);
+		close(pipe_fd[0]);
+		dup2(pipe_fd[1], 1);
+		path = get_path(argv[2], envp);
+		if(execve(path, cmd_arr, envp) == -1)
+		{
+		perror("could not execute command\n");
+		}
 
-	//arg_check(argc, argv);
-	
-	// fork training
+	}
+	else // child
+	{
+		fd = open(argv[4], O_WRONLY);
+		dup2(fd, 1);
+		close(pipe_fd[1]);
+		dup2(pipe_fd[0], 0);
+		path = get_path(argv[3], envp);
+		if(execve(path, cmd_arr, envp) == -1)
+		{
+		perror("could not execute command\n");
+		}
+	}
+
+// 	path = get_path(argv[2], envp);
+	//argc = 0; // for silencing the warning, DELETE when argcheck returned
+/*	//arg_check(argc, argv);
+
+
+
+	fd1 = open (argv[3], O_WRONLY);
+	dup2(fd1, 1);
+
+
+  	if(execve(path, cmd_arr, envp) == -1)
+	{
+		perror("could not execute command\n");
+
+	}
+		// fork traini */
 
 /* 	int i = 0;
 	while(envp[i])
@@ -123,7 +185,7 @@ int	main(int argc, char *argv[], char *envp[])
 	//char cmd[] = "bin/wc";
 //	char *argv[] = {"/bin/ls", "-l", NULL};
 //	char *envp[] = {NULL};
-	argc = 0;
+
 /* 	int package;
 	package = 0;
 	int	pipe1[2];
@@ -131,13 +193,6 @@ int	main(int argc, char *argv[], char *envp[])
 	pipe(pipe1);
 	pipe(pipe2); */
 	//pid = fork();
-
-
-  	if(execve(path, argv, envp) == -1)
-	{
-		perror("could not execute command\n");
-
-	}
 /*
 	if (pid == 0) // this is the child process
 	{
@@ -157,7 +212,7 @@ int	main(int argc, char *argv[], char *envp[])
 	} */
 
 	// fork training
-	return(1);
+	return(0);
 }
 
 
