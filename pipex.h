@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: welhox <welhox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 11:32:09 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/18 16:06:49 by clundber         ###   ########.fr       */
+/*   Updated: 2024/01/19 14:42:29 by welhox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
+# include <sys/wait.h>
 
 typedef struct s_pipex
 {
@@ -32,8 +33,8 @@ typedef struct s_pipex
 void	arg_check(int argc, char **argv);
 void	ft_free(char **array);
 char	*get_path(char *cmd,char **envp);
-void	child_one(t_pipex **pipex);
-void	child_two(t_pipex **pipex);
+void	child_one(t_pipex *pipex);
+void	child_two(t_pipex *pipex);
 void	ft_free_str(char *str);
 void	ft_free_all(t_pipex *pipex);
 

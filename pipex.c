@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: welhox <welhox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 11:34:07 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/18 16:17:12 by clundber         ###   ########.fr       */
+/*   Updated: 2024/01/19 15:12:34 by welhox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	arg_check(int argc, char **argv)
 {
 	int	fd;
 
-	if (argc != 5 || !argv[2] || !argv[3])
+	if (argc != 5)// || !argv[2] || !argv[3])
 	{
 		write(2, "Usage is : ./pipex file1 cmd1 cmd2 file2\n", 41);	
 		exit (1);
@@ -26,17 +26,17 @@ void	arg_check(int argc, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 	{
-		perror("Error");
+		perror("infile");
 		//ft_printf("unable to open read file\n");
 		exit (1);
 	}
 	close(fd);
-	fd = open (argv[4], O_WRONLY);
+/* 	fd = open (argv[4], O_WRONLY);
 	if (fd < 0)
 	{
 		perror("Error");
 		exit (1);
-	}
+	} */
 	close(fd);
 }
 
@@ -94,28 +94,34 @@ char	*get_path(char *cmd,char **envp)
 }
 
 
-void	child_one(t_pipex **pipex)
+void	child_one(t_pipex *pipex)
 
 {
 	int	fd;
-	fd = open((*pipex)->argv[1], O_RDONLY);
+	fd = open(pipex->argv[1], O_RDONLY);
 	dup2(fd, 0);
-	close((*pipex)->pipe_fd[0]);
-	dup2((*pipex)->pipe_fd[1], 1);
-	if(execve((*pipex)->path, (*pipex)->cmd_array, (*pipex)->envp) == -1)
+	close(pipex->pipe_fd[0]);
+	dup2(pipex->pipe_fd[1], 1);
+	if(execve(pipex->path, pipex->cmd_array, pipex->envp) == -1)
 		perror("could not execute command\n");
 
 }
 
-void	child_two(t_pipex **pipex)
+void	child_two(t_pipex *pipex)
 
 {
 	int	fd;
-	fd = open((*pipex)->argv[4], O_WRONLY | O_TRUNC | O_CREAT | 0644);
+	fd = open(pipex->argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	if (fd < 0)
+	{
+		ft_free_all(pipex);
+		perror("outfile");
+		exit(1);
+	}	
 	dup2(fd, 1);
-	close((*pipex)->pipe_fd[1]);
-	dup2((*pipex)->pipe_fd[0], 0);
-	if(execve((*pipex)->path2, (*pipex)->cmd_array2, (*pipex)->envp) == -1)
+	close(pipex->pipe_fd[1]);
+	dup2(pipex->pipe_fd[0], 0);
+	if(execve(pipex->path2, pipex->cmd_array2, pipex->envp) == -1)
 		perror("could not execute command\n");
 }
 
@@ -141,8 +147,7 @@ void	ft_free_all(t_pipex *pipex)
 int	main(int argc, char *argv[], char *envp[])
 
 {
-	t_pipex	*pipex;
-	pipex = malloc(sizeof(t_pipex));
+	t_pipex	pipex;
 	pid_t	pid;
 	pid_t	pid2;
 	int		pipe_fd[2];
@@ -152,14 +157,14 @@ int	main(int argc, char *argv[], char *envp[])
 	//argc = 0;
 	arg_check(argc, argv);
 	pipe(pipe_fd);
-	pipex->argv = argv;
-	pipex->envp = envp;
-	pipex->pipe_fd[0] = pipe_fd[0];
-	pipex->pipe_fd[1] = pipe_fd[1];
-	pipex->cmd_array = ft_split(argv[2], ' ');
-	pipex->cmd_array2 = ft_split(argv[3], ' ');
-	pipex->path = get_path(pipex->cmd_array[0], envp);
-	pipex->path2 = get_path(pipex->cmd_array2[0], envp);
+	pipex.argv = argv;
+	pipex.envp = envp;
+	pipex.pipe_fd[0] = pipe_fd[0];
+	pipex.pipe_fd[1] = pipe_fd[1];
+	pipex.cmd_array = ft_split(argv[2], ' ');
+	pipex.cmd_array2 = ft_split(argv[3], ' ');
+	pipex.path = get_path(pipex.cmd_array[0], envp);
+	pipex.path2 = get_path(pipex.cmd_array2[0], envp);
 	pid = fork();
 	if (pid != 0)
 	{
@@ -171,9 +176,9 @@ int	main(int argc, char *argv[], char *envp[])
 		child_one(&pipex);
 	if (pid != 0)
 		wait(&pid2);
-	close(pipex->pipe_fd[0]);
-	close(pipex->pipe_fd[1]);
-	ft_free_all(pipex);
+	close(pipex.pipe_fd[0]);
+	close(pipex.pipe_fd[1]);
+	ft_free_all(&pipex);
 	return(0);
 }
 
