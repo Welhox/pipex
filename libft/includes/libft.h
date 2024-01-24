@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 17:58:07 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/13 11:17:45 by clundber         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:45:46 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include "ft_printf.h"
-#include "get_next_line.h"
+# include "get_next_line.h"
 
 # define INT_MAX 2147483647
 # define INT_MIN -2147483648
