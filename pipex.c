@@ -6,29 +6,11 @@
 /*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 11:34:07 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/24 16:27:21 by clundber         ###   ########.fr       */
+/*   Updated: 2024/01/26 16:44:36 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-/*  void	arg_check(int argc)//, char **argv)
-
-{
-	//int	fd;
-	if (argc != 5)
-	{
-		write(2, "Usage is : ./pipex file1 cmd1 cmd2 file2\n", 41);
-		exit (1);
-	} 
- 	fd = open(argv[1], O_RDONLY);
-	if (fd < 0)
-	{
-		perror("infile");
-		exit (0);
-	}
-	close(fd); */
-//}
 
 void	child_one(t_pipex *pipex)
 
@@ -46,8 +28,7 @@ void	child_one(t_pipex *pipex)
 	close(pipex->pipe_fd[0]);
 	dup2(pipex->pipe_fd[1], 1);
 	if (execve(pipex->path, pipex->cmd_array, pipex->envp) == -1)
-		//perror("could not execute command\n");
-		write(2, "could not execute command\n", 26);
+		perror("could not execute command\n");
 }
 
 void	child_two(t_pipex *pipex)
@@ -66,7 +47,6 @@ void	child_two(t_pipex *pipex)
 	close(pipex->pipe_fd[1]);
 	dup2(pipex->pipe_fd[0], 0);
 	if (execve(pipex->path2, pipex->cmd_array2, pipex->envp) == -1)
-		//write(2, "could not execute command\n", 26);
 		perror("could not execute command\n");
 }
 
@@ -116,12 +96,6 @@ int	main(int argc, char *argv[], char *envp[])
 		write(2, "Usage is : ./pipex file1 cmd1 cmd2 file2\n", 41);
 		exit (1);
 	}
-/* 	if (!envp)
-	{
-		perror("Error:");
-		exit (1);
-	} */
-	//arg_check(argc);
 	pipe(pipe_fd);
 	ft_argadd(&pipex, argv, envp, pipe_fd);
 	pid = fork();

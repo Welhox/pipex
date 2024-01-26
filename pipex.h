@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 11:32:09 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/24 12:15:11 by clundber         ###   ########.fr       */
+/*   Updated: 2024/01/26 12:01:29 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_pipex
 	int		pipe_fd[2];
 }	t_pipex;
 
-void	arg_check(int argc);//, char **argv);
 void	ft_free(char **array);
 char	*get_path(char *cmd,char **envp);
 void	child_one(t_pipex *pipex);

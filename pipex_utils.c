@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:41:54 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/24 16:42:01 by clundber         ###   ########.fr       */
+/*   Updated: 2024/01/26 16:44:35 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,41 +15,31 @@
 char	**ft_splitter(char *str)
 
 {
-	char **temp_array;
+	char	**temp_array;
 	char	*ptr;
+	int		i;
 
-	ptr = NULL;
-	temp_array = NULL;
-	
-	int	i;
-	int k;
-
-	k = 0;
 	i = 0;
-	while (str[i])
-	{
-		if (str[i] == 39 || str[i] == 34)
-		{
-			temp_array = ft_split(str, str[i]);
-			while (temp_array[0][k])
-			{
-				if (temp_array[0][k] == ' ')
-				{	
-					ptr = temp_array[0];
-					temp_array[0] = ft_substr(temp_array[0], 0, k);
-					ft_free_str(ptr);
-					break; 
-				}
-				k++;
-			}	
-			break;
-		}	
+	while (str[i] && str[i] != 39 && str[i] != 34)
 		i++;
+	if (str[i] == 39 || str[i] == 34)
+	{
+		temp_array = ft_split(str, str[i]);
+		i = 0;
+		while (temp_array[0][i])
+		{
+			if (temp_array[0][i] == ' ')
+			{
+				ptr = temp_array[0];
+				temp_array[0] = ft_substr(temp_array[0], 0, i);
+				ft_free_str(ptr);
+				return (temp_array);
+			}
+			i++;
+		}
+		return (temp_array);
 	}
-	if (!temp_array)
-		temp_array = ft_split(str, ' ');
-	return(temp_array);
-
+	return (ft_split(str, ' '));
 }
 
 void	ft_free_str(char *str)
@@ -71,7 +61,7 @@ void	ft_free_all(t_pipex *pipex)
 	ft_free_str (pipex->path2);
 	ft_free(pipex->cmd_array);
 	ft_free(pipex->cmd_array2);
-} 
+}
 
 void	ft_free(char **array)
 
@@ -81,8 +71,8 @@ void	ft_free(char **array)
 	i = 0;
 	if (array)
 	{
-		while(array[i])
-		i++;
+		while (array[i])
+			i++;
 		while (i >= 0)
 		{
 			free (array[i]);
@@ -104,7 +94,8 @@ char	*ft_strjoin_tres(char const *s1, char const *s2, char const *s3)
 	j = 0;
 	if (!s1 || !s2)
 		return (0);
-	str = malloc ((ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3) + 1) * sizeof(char));
+	str = malloc ((ft_strlen(s1) + ft_strlen(s2)
+				+ ft_strlen(s3) + 1) * sizeof(char));
 	if (!str)
 		return (0);
 	while (s1[i])
@@ -116,15 +107,28 @@ char	*ft_strjoin_tres(char const *s1, char const *s2, char const *s3)
 		str[i++] = s2[j++];
 	j = 0;
 	while (s3[j])
-		str[i++] = s3[j++];	
+		str[i++] = s3[j++];
 	str[i] = '\0';
 	return (str);
 }
 
-char	*get_path(char *cmd,char **envp)
-
+int	ft_arraysize(char **array)
 {
 	int	i;
+
+	i = 0;
+	if (array)
+	{
+		while(array[i])
+			i++;
+	}
+	return(i);
+}
+
+char	*get_path(char *cmd, char **envp)
+
+{
+	int		i;
 	char	**temp;
 	char	**array;
 	char	*path;
@@ -132,22 +136,18 @@ char	*get_path(char *cmd,char **envp)
 
 	temp_str = NULL;
 	array = NULL;
+	path = NULL;
 	i = 0;
 	while (envp[i] && ft_strnstr(envp[i], "PATH=/", 6) == 0)
 		i++;
-	temp_str = ft_substr(envp[i], 5, (ft_strlen(envp[i]) -5));
+	temp_str = ft_substr(envp[i], 5, (ft_strlen(envp[i]) - 5));
 	temp = ft_split(temp_str, ':');
 	ft_free_str(temp_str);
-	//temp = ft_split(envp[i], ':');
-	i = 0;
-	while (temp[i])
-		i++;
-	array = malloc (sizeof(char*) * (i +1));
+	array = malloc (sizeof(char *) * (ft_arraysize(temp) +1));
 	i = 0;
 	while (temp[i])
 	{
 		array[i] = ft_strjoin_tres(temp[i], "/", cmd);
-		//ft_printf("array = %s\n", array[i]);
 		i++;
 	}
 	array[i] = NULL;
@@ -155,7 +155,8 @@ char	*get_path(char *cmd,char **envp)
 	i = 0;
 	while (array[i] && (access (array[i], (F_OK | X_OK)) == -1))
 		i++;
-	path = ft_strdup(array[i]);//ft_strjoin(array[i], cmd);
+	if (array[i])
+		path = ft_strdup(array[i]);
 	ft_free(array);
 	return (path);
 }
