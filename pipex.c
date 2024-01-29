@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: welhox <welhox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 11:34:07 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/29 17:01:47 by clundber         ###   ########.fr       */
+/*   Updated: 2024/01/29 22:06:58 by welhox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,11 @@ int	ft_exec(pid_t pid, pid_t pid2, t_pipex *pipex)
 	else
 	{
 		pid2 = fork();
+		if (pid2 == -1)
+		{
+			//ft_free_all(&pipex);
+			return (1);
+		}
 		if (pid2 == 0)
 			child_two(pipex);
 	}
@@ -91,6 +96,7 @@ int	ft_exec(pid_t pid, pid_t pid2, t_pipex *pipex)
 		waitpid(pid2, &status , 1);
 		//wait(&pid2);
 	}
+	ft_printf("return = %d\n", status);
 	return (status);
 }
 
@@ -110,9 +116,8 @@ int		ft_argcheck(int argc, char *argv[], char *envp[])
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
  	{
-		return (1);
- 		/* perror(argv[1]);
-		exit (1);  */
+ 		perror(argv[1]);
+		exit (0);
 	} 
 	close (fd);
 /* 	fd = open (argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
@@ -156,6 +161,11 @@ int	main(int argc, char *argv[], char *envp[])
 	pipe(pipe_fd);
 	ft_argadd(&pipex, argv, envp, pipe_fd);
 	pid = fork();
+	if (pid == -1)
+	{
+		ft_free_all(&pipex);
+		return (1);
+	}
 	error_code = ft_exec(pid, pid2, &pipex);
 	ft_free_all(&pipex);
 	return (error_code);
