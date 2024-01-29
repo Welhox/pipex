@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 11:32:09 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/26 12:01:29 by clundber         ###   ########.fr       */
+/*   Updated: 2024/01/29 16:36:01 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,19 @@ typedef struct s_pipex
 	char	**cmd_array;
 	char	**cmd_array2;
 	int		pipe_fd[2];
+	int		error_code;
 }	t_pipex;
 
+char	*ft_tri_strjoin(char const *s1, char const *s2, char const *s3);
 void	ft_free(char **array);
-char	*get_path(char *cmd,char **envp);
+char	*get_path(char *cmd,char **envp, char *ptr, int i);
 void	child_one(t_pipex *pipex);
 void	child_two(t_pipex *pipex);
 void	ft_free_str(char *str);
 void	ft_free_all(t_pipex *pipex);
 char	**ft_splitter(char *str);
-char	*get_path(char *cmd,char **envp);
-void	ft_exec(pid_t pid, pid_t pid2, t_pipex *pipex);
+int		ft_exec(pid_t pid, pid_t pid2, t_pipex *pipex);
+//void	ft_argcheck(int argc, char *argv[], char *envp[]);
+void	ft_error(t_pipex *pipex);
 
 # endif

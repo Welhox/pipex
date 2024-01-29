@@ -6,7 +6,7 @@
 #    By: clundber <clundber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 11:59:53 by clundber          #+#    #+#              #
-#    Updated: 2024/01/17 15:39:08 by clundber         ###   ########.fr        #
+#    Updated: 2024/01/29 13:05:57 by clundber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ LIBFT_FLS = $(LIBFT_DIR)/ft_atoi.c $(LIBFT_DIR)/ft_strlen.c $(LIBFT_DIR)/ft_bzer
 		$(LIBFT_DIR)/ft_toupper.c $(LIBFT_DIR)/ft_itoa.c $(LIBFT_DIR)/ft_strmapi.c $(LIBFT_DIR)/ft_split.c $(LIBFT_DIR)/ft_striteri.c \
 		$(LIBFT_DIR)/ft_lstnew_bonus.c $(LIBFT_DIR)/ft_lstadd_front_bonus.c $(LIBFT_DIR)/ft_lstsize_bonus.c \
 		$(LIBFT_DIR)/ft_lstlast_bonus.c $(LIBFT_DIR)/ft_lstadd_back_bonus.c $(LIBFT_DIR)/ft_lstdelone_bonus.c\
-		$(LIBFT_DIR)/ft_lstclear_bonus.c $(LIBFT_DIR)/ft_lstiter_bonus.c $(LIBFT_DIR)/ft_lstmap_bonus.c
+		$(LIBFT_DIR)/ft_lstclear_bonus.c $(LIBFT_DIR)/ft_lstiter_bonus.c $(LIBFT_DIR)/ft_lstmap_bonus.c $(LIBFT_DIR)/ft_arraysize.c
 
 FT_PRINTF_FLS = $(FT_PRINTF_DIR)/ft_printf.c $(FT_PRINTF_DIR)/ft_printhex.c $(FT_PRINTF_DIR)/ft_putnbr_return.c \
 		$(FT_PRINTF_DIR)/ft_putstr_return.c $(FT_PRINTF_DIR)/ft_putnbr_u_return.c $(FT_PRINTF_DIR)/ft_putchar_return.c

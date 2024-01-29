@@ -6,7 +6,7 @@
 #    By: clundber <clundber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 11:59:53 by clundber          #+#    #+#              #
-#    Updated: 2024/01/24 10:58:13 by clundber         ###   ########.fr        #
+#    Updated: 2024/01/29 13:10:44 by clundber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIBFTNAME = libft.a
 LIBFT_DIR = ./libft
 
 #------------- SOURCE FILES ------#
-CFILES = pipex.c pipex_utils.c
+CFILES = pipex.c pipex_utils.c pipex_utils2.c
 
 OFILES = $(CFILES:.c=.o)
 
