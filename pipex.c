@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: welhox <welhox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 11:34:07 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/30 15:17:44 by clundber         ###   ########.fr       */
+/*   Updated: 2024/01/30 21:12:18 by welhox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ void	child_two(t_pipex *pipex)
 		ft_free_all(pipex);
 		exit(1);
 	}
-	ft_printf("ok here1\n");
+	//ft_printf("ok here1\n");
 
 	dup2(pipex->pipe_fd[0], 0);
 	close(pipex->pipe_fd[1]);
-	ft_printf("ok here2\n");
+	//ft_printf("ok here2\n");
 	dup2(fd, 1);
-	ft_printf("ok here3\n");
+	//ft_printf("ok here3\n");
 
 	//ft_printf("ok here\n");
 	if (execve(pipex->path2, pipex->cmd_array2, pipex->envp) == -1)
@@ -84,12 +84,16 @@ void	ft_argadd(t_pipex *pipex, char **argv, char **envp, int pipe_fd[2])
 	pipex->cmd_array2 = ft_splitter(pipex->argv[3]);
 	if (access(pipex->cmd_array[0], (F_OK | X_OK)) == -1)
 		pipex->path = get_path(pipex->cmd_array[0], pipex->envp, ptr, i);
+	else
+		pipex->path = ft_strdup(pipex->cmd_array[0]);
 	if (access(pipex->cmd_array2[0], (F_OK | X_OK)) == -1)	
 		pipex->path2 = get_path(pipex->cmd_array2[0], pipex->envp, ptr, i);
+	else
+		pipex->path2 = ft_strdup(pipex->cmd_array2[0]);
 	pipex->pipe_fd[0] = pipe_fd[0];
 	pipex->pipe_fd[1] = pipe_fd[1];
-	//pipex->exit_code1 = 0;
-	//pipex->exit_code2 = 0;
+	pipex->exit_code1 = 0;
+	pipex->exit_code2 = 0;
 }
 
 void	ft_exec(pid_t pid, pid_t pid2, t_pipex *pipex)
@@ -113,14 +117,14 @@ void	ft_exec(pid_t pid, pid_t pid2, t_pipex *pipex)
 	//if (pid != 0 && pid2 != 0)
   	else
 	{
- 		//waitpid(pid, &pipex->exit_code1, 0);
-		waitpid(pid2, &pipex->exit_code2, 0); 
+ 		waitpid(pid, &pipex->exit_code1, 1);
+		waitpid(pid2, &pipex->exit_code2, 1); 
 		if (WIFEXITED(pipex->exit_code1))
 			pipex->exit_code1 = WEXITSTATUS(pipex->exit_code1);
-			ft_printf("exit code1 = %d\n", pipex->exit_code1);
+		//ft_printf("exit code1 = %d\n", pipex->exit_code1);
 		if (WIFEXITED(pipex->exit_code2))
 			pipex->exit_code2 = WEXITSTATUS(pipex->exit_code2);
-			ft_printf("exit code2 = %d\n", pipex->exit_code2); 
+		//ft_printf("exit code2 = %d\n", pipex->exit_code2); 
 	}
 }
 
