@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:41:54 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/29 17:01:47 by clundber         ###   ########.fr       */
+/*   Updated: 2024/01/31 13:59:50 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char	*get_path(char *cmd, char **envp, char *ptr, int i)
 	char	**array;
 	char	*path;
 
+	array = NULL;
 	while (envp[i] && ft_strnstr(envp[i], "PATH=/", 6) == 0)
 		i++;
 	path = ft_substr(envp[i], 5, (ft_strlen(envp[i]) - 5));
@@ -80,4 +81,33 @@ char	*get_path(char *cmd, char **envp, char *ptr, int i)
 		path = ft_strdup(array[i]);
 	ft_free(array);
 	return (path);
+}
+
+void	ft_argcheck(int argc, char *argv[], char *envp[])
+
+{
+	int	fd;
+
+	fd = 0;
+	if (argc != 5)
+	{
+		ft_putstr_fd("Usage is : file cmd1 cmd2 file2\n", 2);
+		exit (1);
+	}
+	if (!envp)
+		exit (1);
+	fd = open(argv[1], O_RDONLY);
+	if (fd < 0)
+	{
+		perror(argv[1]);
+		exit (0);
+	}
+	close (fd);
+	fd = open (argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	if (fd < 0)
+	{
+		perror(argv[4]);
+		exit (1);
+	}
+	close (fd);
 }
