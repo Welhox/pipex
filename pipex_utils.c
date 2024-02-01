@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:41:54 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/31 13:59:50 by clundber         ###   ########.fr       */
+/*   Updated: 2024/02/01 14:42:46 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,6 @@ char	**ft_splitter(char *str)
 		return (temp_array);
 	}
 	return (ft_split(str, ' '));
-}
-
-void	ft_free_all(t_pipex *pipex)
-
-{
-	close(pipex->pipe_fd[0]);
-	close(pipex->pipe_fd[1]);
-	ft_free_str (pipex->path);
-	ft_free_str (pipex->path2);
-	ft_free(pipex->cmd_array);
-	ft_free(pipex->cmd_array2);
 }
 
 char	*get_path(char *cmd, char **envp, char *ptr, int i)
@@ -89,7 +78,7 @@ void	ft_argcheck(int argc, char *argv[], char *envp[])
 	int	fd;
 
 	fd = 0;
-	if (argc != 5)
+	if (argc != 5 || !argv[2][0] || !argv[3][0])
 	{
 		ft_putstr_fd("Usage is : file cmd1 cmd2 file2\n", 2);
 		exit (1);
@@ -110,4 +99,33 @@ void	ft_argcheck(int argc, char *argv[], char *envp[])
 		exit (1);
 	}
 	close (fd);
+}
+
+char	*ft_tri_strjoin(char const *s1, char const *s2, char const *s3)
+
+{
+	char	*str;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (0);
+	str = malloc ((ft_strlen(s1) + ft_strlen(s2)
+				+ ft_strlen(s3) + 1) * sizeof(char));
+	if (!str)
+		return (0);
+	while (s1[i])
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	while (s2[j])
+		str[i++] = s2[j++];
+	j = 0;
+	while (s3[j])
+		str[i++] = s3[j++];
+	str[i] = '\0';
+	return (str);
 }
