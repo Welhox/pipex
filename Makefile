@@ -6,7 +6,7 @@
 #    By: clundber <clundber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 11:59:53 by clundber          #+#    #+#              #
-#    Updated: 2024/01/31 14:53:35 by clundber         ###   ########.fr        #
+#    Updated: 2024/02/05 11:14:57 by clundber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,11 +31,13 @@ OFILES = $(CFILES:.c=.o)
 CC = @cc
 CFLAGS = -Wall -Wextra -Werror -g -I includes
 
-all: $(NAME)
+all: $(LIBFTNAME) $(NAME) 
+
+$(LIBFTNAME):
+	@make -C $(LIBFT_DIR)
 
 $(NAME): $(OFILES)
 	@echo "$(COLOUR_BLUE)compiling pipex$(COLOUR_END)"
-	@make -C libft
 	$(CC) $(CFLAGS) $(OFILES) $(LIBFT_DIR)/$(LIBFTNAME) -o $(NAME)
 	@echo "$(COLOUR_GREEN)pipex compiled successfully$(COLOUR_END)"
 clean:
@@ -47,6 +49,6 @@ fclean: clean
 	@rm -f $(NAME) 
 	@rm -f libft/libft.a
 
-re: fclean $(NAME) 
+re: fclean all
 
 .PHONY: all clean fclean re
