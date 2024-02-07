@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 11:32:09 by clundber          #+#    #+#             */
-/*   Updated: 2024/01/31 14:39:18 by clundber         ###   ########.fr       */
+/*   Updated: 2024/02/07 10:49:54 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct s_pipex
 	char	**cmd_array;
 	char	**cmd_array2;
 	int		pipe_fd[2];
-	int		exit_code1;
 	int		exit_code2;
 
 }	t_pipex;

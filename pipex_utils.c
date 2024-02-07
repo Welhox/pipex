@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:41:54 by clundber          #+#    #+#             */
-/*   Updated: 2024/02/05 11:43:56 by clundber         ###   ########.fr       */
+/*   Updated: 2024/02/07 10:52:09 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	ft_argcheck(int argc, char *argv[], char *envp[])
 		ft_putstr_fd("Usage is : file cmd1 cmd2 file2\n", 2);
 		exit (1);
 	}
-	if (!envp || !envp[0][0])
+	if (!envp || !envp[0])
 		exit (1);
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
