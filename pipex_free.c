@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 13:06:19 by clundber          #+#    #+#             */
-/*   Updated: 2024/02/07 10:52:16 by clundber         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:59:36 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,31 @@ void	ft_free_all(t_pipex *pipex)
 	ft_free_str (pipex->path2);
 	ft_free(pipex->cmd_array);
 	ft_free(pipex->cmd_array2);
+}
+
+void	ft_exit(char *str, int code)
+
+{
+	ft_putstr_fd(str, 2);
+	exit(code);
+}
+
+void	ft_argcheck(int argc, char *argv[], char *envp[], t_pipex *pipex)
+
+{
+	int	fd;
+
+	fd = 0;
+	if (argc != 5)
+		ft_exit("usage is : file cmd1 cmd2 file2\n", 1);
+	if (!argv[2][0])
+		pipex->cmd_array = ft_split("invalid", 'z');
+	else
+		pipex->cmd_array = NULL;
+	if (!argv[3][0])
+		pipex->cmd_array2 = ft_split("invalid", 'z');
+	else
+		pipex->cmd_array2 = NULL;
+	if (!envp || !envp[0])
+		ft_exit("envp missing\n", 1);
 }

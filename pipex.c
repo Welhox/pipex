@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 11:34:07 by clundber          #+#    #+#             */
-/*   Updated: 2024/02/07 10:49:52 by clundber         ###   ########.fr       */
+/*   Updated: 2024/02/07 19:06:33 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ void	child_one(t_pipex *pipex)
 	close(pipex->pipe_fd[1]);
 	if (execve(pipex->path, pipex->cmd_array, pipex->envp) == -1)
 	{
+		ft_free_all(pipex);
+		ft_putstr_fd("command not found: ", 2);
 		ft_putstr_fd(pipex->argv[2], 2);
-		ft_putstr_fd(": command not found\n", 2);
+		ft_putstr_fd("\n", 2);
 		exit(1);
 	}
 }
@@ -57,8 +59,10 @@ void	child_two(t_pipex *pipex)
 	close(fd);
 	if (execve(pipex->path2, pipex->cmd_array2, pipex->envp) == -1)
 	{
+		ft_free_all(pipex);
+		ft_putstr_fd("command not found: ", 2);
 		ft_putstr_fd(pipex->argv[3], 2);
-		ft_putstr_fd(": command not found\n", 2);
+		ft_putstr_fd("\n", 2);
 		exit(127);
 	}
 }
@@ -66,23 +70,21 @@ void	child_two(t_pipex *pipex)
 void	ft_argadd(t_pipex *pipex, char **argv, char **envp, int pipe_fd[2])
 
 {
-	char	*ptr;
 	int		i;
 
 	i = 0;
-	ptr = NULL;
 	pipex->argv = argv;
 	pipex->envp = envp;
-	pipex->cmd_array = ft_splitter(pipex->argv[2]);
-	pipex->cmd_array2 = ft_splitter(pipex->argv[3]);
-	if (!pipex->cmd_array[0] || !pipex->cmd_array2[0])
-		exit(1);
+	if (!pipex->cmd_array)
+		pipex->cmd_array = ft_splitter(pipex->argv[2]);
+	if (!pipex->cmd_array2)
+		pipex->cmd_array2 = ft_splitter(pipex->argv[3]);
 	if (access(pipex->cmd_array[0], (F_OK | X_OK)) == -1)
-		pipex->path = get_path(pipex->cmd_array[0], pipex->envp, ptr, i);
+		pipex->path = get_path(pipex->cmd_array[0], pipex->envp, i);
 	else
 		pipex->path = ft_strdup(pipex->cmd_array[0]);
 	if (access(pipex->cmd_array2[0], (F_OK | X_OK)) == -1)
-		pipex->path2 = get_path(pipex->cmd_array2[0], pipex->envp, ptr, i);
+		pipex->path2 = get_path(pipex->cmd_array2[0], pipex->envp, i);
 	else
 		pipex->path2 = ft_strdup(pipex->cmd_array2[0]);
 	pipex->pipe_fd[0] = pipe_fd[0];
@@ -107,7 +109,6 @@ void	ft_exec(pid_t pid, pid_t pid2, t_pipex *pipex)
 		if (WIFEXITED(status))
 			pipex->exit_code2 = WEXITSTATUS(status);
 	}
-	//ft_free_all(pipex);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -120,7 +121,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 	pid = 0;
 	pid2 = 0;
-	ft_argcheck(argc, argv, envp);
+	ft_argcheck(argc, argv, envp, &pipex);
 	pipe(pipe_fd);
 	ft_argadd(&pipex, argv, envp, pipe_fd);
 	pid = fork();
