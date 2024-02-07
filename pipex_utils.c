@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:41:54 by clundber          #+#    #+#             */
-/*   Updated: 2024/02/07 10:52:09 by clundber         ###   ########.fr       */
+/*   Updated: 2024/02/07 12:02:05 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ char	*get_path(char *cmd, char **envp, char *ptr, int i)
 	array = NULL;
 	while (envp[i] && ft_strnstr(envp[i], "PATH=/", 6) == 0)
 		i++;
+	if (!envp[i])
+		return(NULL);
 	path = ft_substr(envp[i], 5, (ft_strlen(envp[i]) - 5));
 	array = ft_split(path, ':');
 	free (path);
