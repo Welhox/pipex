@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:54:18 by clundber          #+#    #+#             */
-/*   Updated: 2023/11/07 14:06:06 by clundber         ###   ########.fr       */
+/*   Updated: 2024/02/12 14:09:34 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

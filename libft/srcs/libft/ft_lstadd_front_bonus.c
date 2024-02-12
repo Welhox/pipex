@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clundber <clundber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 09:40:55 by clundber          #+#    #+#             */
-/*   Updated: 2023/11/08 09:45:58 by clundber         ###   ########.fr       */
+/*   Updated: 2024/02/12 14:09:32 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
