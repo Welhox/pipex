@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:41:54 by clundber          #+#    #+#             */
-/*   Updated: 2024/02/07 18:59:35 by clundber         ###   ########.fr       */
+/*   Updated: 2024/02/22 13:35:20 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,7 @@ char	*cmd_arraymaker(char *str, char *cmd)
 
 {
 	char	*ptr;
-	int		i;
 
-	i = 0;
 	ptr = NULL;
 	ptr = str;
 	str = ft_tri_strjoin(str, "/", cmd);

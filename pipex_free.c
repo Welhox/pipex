@@ -6,7 +6,7 @@
 /*   By: clundber <clundber@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 13:06:19 by clundber          #+#    #+#             */
-/*   Updated: 2024/02/07 18:59:36 by clundber         ###   ########.fr       */
+/*   Updated: 2024/02/22 13:35:36 by clundber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ void	ft_exit(char *str, int code)
 void	ft_argcheck(int argc, char *argv[], char *envp[], t_pipex *pipex)
 
 {
-	int	fd;
-
-	fd = 0;
 	if (argc != 5)
 		ft_exit("usage is : file cmd1 cmd2 file2\n", 1);
 	if (!argv[2][0])
